@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ordenar por: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Button
+            android:id="@+id/ordenar_nombre"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#858585"
+            android:text="nombre"
+            app:iconTint="#6E6E6E" />
+
+        <Button
+            android:id="@+id/ordenar_peso"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="98dp"
+            android:layout_height="wrap_content"
+            android:background="#8F8F8F"
+            android:text="peso"
+            app:rippleColor="#8E8E8E" />
+
+        <Button
+            android:id="@+id/ordenar_precio"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:background="#8F8F8F"
+            android:text="precio"
+            app:rippleColor="#8E8E8E" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/lista_productos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

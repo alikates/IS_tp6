@@ -1,10 +1,10 @@
 package es.unizar.eina.appPedidos;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,8 +26,8 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_pedido);
-        setTitle(R.string.edit_pedido);
+        setContentView(R.layout.editar_pedido);
+        setTitle(R.string.editar_pedido);
 
         mDbHelper = new AppPedidosDbAdapter(this);
         mDbHelper.open();
@@ -100,10 +100,13 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
         String nomCliente = mClientText.getText().toString();
         String tlfCliente = mTelfText.getText().toString();
 
-        if(mRowId == null) {
-            long id = mDbHelper.createPedido(fecha, nomCliente, tlfCliente);
-            if(id > 0) {
-                mRowId = id;
+        if(mRowId == null){
+            if (!fecha.equals("") && !nomCliente.equals("") && !tlfCliente.equals("")) {
+                Log.d("AppPedidos", fecha + nomCliente + tlfCliente);
+                long id = mDbHelper.createPedido(fecha, nomCliente, tlfCliente);
+                if(id > 0) {
+                    mRowId = id;
+                }
             }
         } else {
             mDbHelper.updatePedido(mRowId, fecha, nomCliente, tlfCliente);

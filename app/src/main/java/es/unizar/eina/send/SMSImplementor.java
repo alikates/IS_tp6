@@ -34,11 +34,10 @@ public class SMSImplementor implements SendImplementor {
      * Implementaci�n del m�todo send utilizando la aplicaci�n de gesti�n de correo de Android
      * Solo se copia el asunto y el cuerpo
      * @param subject asunto
-     * @param body cuerpo del mensaje
      */
-    public void send (String subject, String body) {
+    public void send (String subject) {
         Intent intent = new Intent (Intent.ACTION_VIEW);
-        intent.putExtra("sms_body" , subject + ": " + body);
+        intent.putExtra("sms_body" , subject);
         intent.setData(Uri.parse("sms:"));
 //        intent.setType("vnd.android-dir/mms-sms");
         getSourceActivity().startActivity(intent);

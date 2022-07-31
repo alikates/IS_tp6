@@ -30,13 +30,11 @@ public class MailImplementor implements SendImplementor{
     * Implementacion del metodo send utilizando la aplicacion de gestion de correo de Android
     * Solo se copia el asunto y el cuerpo
     * @param subject asunto
-    * @param body cuerpo del mensaje
     */
-   public void send(String subject, String body) {
+   public void send(String subject) {
        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
        emailIntent.setType("plain/text");
-       emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
        getSourceActivity().startActivity(Intent.createChooser(emailIntent, "Sendmail..."));
    }
 

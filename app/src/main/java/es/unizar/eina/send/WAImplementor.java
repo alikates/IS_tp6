@@ -30,9 +30,8 @@ public class WAImplementor implements SendImplementor {
      * Implementaci�n del m�todo send utilizando la aplicaci�n de gesti�n de correo de Android
      * Solo se copia el asunto y el cuerpo
      * @param subject asunto
-     * @param body cuerpo del mensaje
      */
-    public void send (String subject, String body) {
+    public void send (String subject) {
         Intent intent = new Intent (Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT , subject);

@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import es.unizar.eina.send.SendAbstractionImpl;
+import es.unizar.eina.send.WAImplementor;
+
 public class AppPedidos extends AppCompatActivity {
 
     private static final int ACTIVITY_CREATE=0;
@@ -207,7 +210,8 @@ public class AppPedidos extends AppCompatActivity {
     }
 
     protected void enviarPedido(int position, long id) {
-
+        SendAbstractionImpl sender = new SendAbstractionImpl(this, "WA");
+        sender.send("asdasd");
     }
 
     @Override

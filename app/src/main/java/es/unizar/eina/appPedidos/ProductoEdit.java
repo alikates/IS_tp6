@@ -1,6 +1,5 @@
 package es.unizar.eina.appPedidos;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Loader;
@@ -27,8 +24,8 @@ public class ProductoEdit extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_producto);
-        setTitle(R.string.edit_producto);
+        setContentView(R.layout.editar_producto);
+        setTitle(R.string.editar_producto);
 
         mDbHelper = new AppPedidosDbAdapter(this);
         mDbHelper.open();

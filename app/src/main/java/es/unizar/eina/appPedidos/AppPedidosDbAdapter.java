@@ -34,6 +34,9 @@ public class AppPedidosDbAdapter {
 
     public static final String KEY_ROWID = "_id";
 
+    public static final String KEY_PRODUCTO = "producto";
+    public static final String KEY_PEDIDO = "pedido";
+
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
@@ -79,8 +82,8 @@ public class AppPedidosDbAdapter {
      * successfully created return the new rowId for that note, otherwise return
      * a -1 to indicate failure.
      *
-     * @param title the title of the note
-     * @param body the body of the note
+     * @param fecha the title of the note
+     * @param nom_cliente the body of the note
      * @return rowId or -1 if failed
      */
     public long createPedido(String fecha, String nom_cliente, String telf_cliente) {
@@ -107,8 +110,8 @@ public class AppPedidosDbAdapter {
      * successfully created return the new rowId for that note, otherwise return
      * a -1 to indicate failure.
      *
-     * @param title the title of the note
-     * @param body the body of the note
+     * @param nombre the title of the note
+     * @param desc the body of the note
      * @return rowId or -1 if failed
      */
     public long createProducto(String nombre, String desc, double precio, double peso) {
@@ -119,6 +122,14 @@ public class AppPedidosDbAdapter {
         initialValues.put(KEY_PESO_PROD, peso);
 
         return mDb.insert(PRODUCTOS_TABLE, null, initialValues);
+    }
+
+    public int getCantidadProductoPedido(long idProducto, long idPedido) {
+        Cursor c = mDb.query(PRODUCTOS_PEDIDOS_TABLE, new String[]{"cantidad"}, KEY_PRODUCTO + "=" + idProducto + " AND " + KEY_PEDIDO + "=" + idPedido, null, null, null, null);
+        if (c.getCount() < 1) {
+            return 0;
+        }
+        return c.getInt(0);
     }
 
     public long addProductoPedido(long idProducto, long idPedido, int cantidad) {
@@ -132,8 +143,17 @@ public class AppPedidosDbAdapter {
         return mDb.insert(PRODUCTOS_PEDIDOS_TABLE, null, null);
     }
 
-    public boolean deleteProductoPedido(long rowId) {
-        return mDb.delete(PRODUCTOS_PEDIDOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    public boolean updateProductoPedido(long idProducto, long idPedido, int cantidad) {
+        if (cantidad > 0) {
+            ContentValues updatedValues = new ContentValues();
+            updatedValues.put("cantidad", cantidad);
+            return mDb.update(PRODUCTOS_PEDIDOS_TABLE, updatedValues, KEY_PRODUCTO + "=" + idProducto + " AND " + KEY_PEDIDO + "=" + idPedido, null) > 0;
+        }
+        return false;
+    }
+
+    public boolean deleteProductoPedido(long idProducto, long idPedido) {
+        return mDb.delete(PRODUCTOS_PEDIDOS_TABLE, KEY_PRODUCTO + "=" + idProducto + " AND " + KEY_PEDIDO + "=" + idPedido, null) > 0;
     }
 
     /**
@@ -168,10 +188,9 @@ public class AppPedidosDbAdapter {
                 KEY_PRECIO_PROD, KEY_PESO_PROD}, null, null, null, null, order);
     }
 
-    public Cursor fetchProductosPedidos() {
+    public Cursor fetchProductosPedidos(long idPedido) {
         String sql = "SELECT * FROM productos" +
-                " JOIN productos_pedidos ON producto = _id";
-        //mDb.execSQL("SELECT nombre, cantidad FROM productos_pedidos JOIN productos ON productos_pedidos._id = productos._id");
+                " JOIN productos_pedidos ON producto = _id WHERE pedido = " + idPedido;
         return mDb.rawQuery(sql, null);
     }
 
@@ -242,9 +261,9 @@ public class AppPedidosDbAdapter {
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
      *
-     * @param rowId id of note to update
-     * @param title value to set note title to
-     * @param body value to set note body to
+     * @param rowId
+     * @param fecha
+     * @param cliente
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updatePedido(long rowId, String fecha, String cliente, String telefono) {
@@ -262,8 +281,8 @@ public class AppPedidosDbAdapter {
      * values passed in
      *
      * @param rowId id of note to update
-     * @param title value to set note title to
-     * @param body value to set note body to
+     * @param nombre value to set note title to
+     * @param desc value to set note body to
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updateProducto(long rowId, String nombre, String desc, double precio, double peso) {
@@ -275,4 +294,21 @@ public class AppPedidosDbAdapter {
 
         return mDb.update(PRODUCTOS_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+
+/*
+    public Loader<Cursor> fetchNumProductosPedido(int id_pedido, int id_producto) {
+        return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID, KEY_NOM_PROD,
+                KEY_PRECIO_PROD, KEY_PESO_PROD, KEY_DESC_PROD}, KEY_ROWID + "=" + rowId, null, KEY_NOM_PROD+" DESC" )
+        {
+            @Override
+            public Cursor loadInBackground()
+            {
+                mDbHelper = new DatabaseHelper(getContext());
+                mDb = mDbHelper.getReadableDatabase();
+                // You can use any query that returns a cursor.
+                return mDb.query(PRODUCTOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
+                        null, null, getSortOrder(), null);
+            }
+        };
+    }*/
 }

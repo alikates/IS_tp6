@@ -38,13 +38,6 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
 
     private ArrayList<Producto> listaProductos = new ArrayList<>();
 
-    public long getId() {
-        if (mRowId == null) {
-            return -1;
-        }
-        return mRowId;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

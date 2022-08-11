@@ -11,17 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ItemProducto extends ArrayAdapter<Producto> {
-    private ArrayList<Producto> dataSet;
-    Context mContext;
+    private ArrayList<Producto> listaProductos;
 
     public ItemProducto(ArrayList<Producto> data, Context context) {
         super(context, R.layout.item_producto_con_botones, data);
-        this.mContext = context;
-        this.dataSet = data;
+        this.listaProductos = data;
     }
 
     public ArrayList<Producto> getProductosActualizados() {
-        return dataSet;
+        return listaProductos;
     }
 
     @Override

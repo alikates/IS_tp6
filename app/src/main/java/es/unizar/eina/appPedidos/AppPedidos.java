@@ -1,5 +1,7 @@
 package es.unizar.eina.appPedidos;
 
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,14 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Iterator;
+
 import es.unizar.eina.send.SendAbstractionImpl;
 import es.unizar.eina.send.WAImplementor;
 
 public class AppPedidos extends AppCompatActivity {
 
-    private static final int ACTIVITY_CREATE=0;
-    private static final int ACTIVITY_EDIT=1;
-    private static final int ACTIVITY_SEND=2;
+    private static final int ACTIVITY_CREATE = 0;
+    private static final int ACTIVITY_EDIT = 1;
+    private static final int ACTIVITY_SEND = 2;
 
     private static final int LISTAR_PRODUCTOS_ID = Menu.FIRST;
     private static final int CREAR_PRODUCTO_ID = Menu.FIRST + 1;
@@ -42,7 +46,9 @@ public class AppPedidos extends AppCompatActivity {
     private int selectedTab = 0;    //Default pedidos
     private int order_by = ORDER_0;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -155,7 +161,7 @@ public class AppPedidos extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (selectedTab) {
             case 0:
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case DELETE_ID:
                         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                         mDbHelper.deletePedido(info.id);
@@ -171,7 +177,7 @@ public class AppPedidos extends AppCompatActivity {
                 break;
             case 1:
             default:
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case DELETE_ID:
                         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                         mDbHelper.deleteProducto(info.id);
@@ -210,6 +216,12 @@ public class AppPedidos extends AppCompatActivity {
     }
 
     protected void enviarPedido(int position, long id) {
+        Cursor mProductosPedidosCursor = mDbHelper.fetchProductosPedidos(id);
+
+        while (mProductosPedidosCursor.moveToNext()) {
+            mProductosPedidosCursor.getInt(mProductosPedidosCursor.getColumnIndex(KEY_PRODUCTO));
+        }
+
         SendAbstractionImpl sender = new SendAbstractionImpl(this, "WA");
         sender.send("asdasd");
     }
@@ -229,12 +241,12 @@ public class AppPedidos extends AppCompatActivity {
         switch (selectedTab) {
             case 0:
                 mNotesCursor = mDbHelper.fetchAllPedidos(order_by);
-                from = new String[] {
+                from = new String[]{
                         AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO,
                         AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO,
                         AppPedidosDbAdapter.KEY_FECHA_PEDIDO
                 };
-                to = new int[] {
+                to = new int[]{
                         R.id.nombre,
                         R.id.telefono,
                         R.id.fecha
@@ -244,12 +256,12 @@ public class AppPedidos extends AppCompatActivity {
             case 1:
             default:
                 mNotesCursor = mDbHelper.fetchAllProductos(order_by);
-                from = new String[] {
+                from = new String[]{
                         AppPedidosDbAdapter.KEY_NOM_PROD,
                         AppPedidosDbAdapter.KEY_PRECIO_PROD,
                         AppPedidosDbAdapter.KEY_PESO_PROD
                 };
-                to = new int[] {
+                to = new int[]{
                         R.id.nombre,
                         R.id.precio,
                         R.id.peso

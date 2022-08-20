@@ -76,54 +76,6 @@ public class AppPedidosDbAdapter {
         mDbHelper.close();
     }
 
-
-    /**
-     * Create a new note using the title and body provided. If the note is
-     * successfully created return the new rowId for that note, otherwise return
-     * a -1 to indicate failure.
-     *
-     * @param fecha the title of the note
-     * @param nom_cliente the body of the note
-     * @return rowId or -1 if failed
-     */
-    public long createPedido(String fecha, String nom_cliente, String telf_cliente) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_FECHA_PEDIDO, fecha);
-        initialValues.put(KEY_NOMBRE_CLIENTE_PEDIDO, nom_cliente);
-        initialValues.put(KEY_TELEFONO_CLIENTE_PEDIDO, telf_cliente);
-
-        return mDb.insert(PEDIDOS_TABLE, null, initialValues);
-    }
-
-    /**
-     * Delete the note with the given rowId
-     *
-     * @param rowId id of note to delete
-     * @return true if deleted, false otherwise
-     */
-    public boolean deletePedido(long rowId) {
-        return mDb.delete(PEDIDOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
-    }
-
-    /**
-     * Create a new note using the title and body provided. If the note is
-     * successfully created return the new rowId for that note, otherwise return
-     * a -1 to indicate failure.
-     *
-     * @param nombre the title of the note
-     * @param desc the body of the note
-     * @return rowId or -1 if failed
-     */
-    public long createProducto(String nombre, String desc, double precio, double peso) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_NOM_PROD, nombre);
-        initialValues.put(KEY_DESC_PROD, desc);
-        initialValues.put(KEY_PRECIO_PROD, precio);
-        initialValues.put(KEY_PESO_PROD, peso);
-
-        return mDb.insert(PRODUCTOS_TABLE, null, initialValues);
-    }
-
     public int getCantidadProductoPedido(long idProducto, long idPedido) {
         Cursor c = mDb.query(PRODUCTOS_PEDIDOS_TABLE, new String[]{"cantidad"}, KEY_PRODUCTO + "=" + idProducto + " AND " + KEY_PEDIDO + "=" + idPedido, null, null, null, null);
         if (c.getCount() < 1) {
@@ -132,7 +84,7 @@ public class AppPedidosDbAdapter {
         return c.getInt(0);
     }
 
-    public long addProductoPedido(long idProducto, long idPedido, int cantidad) {
+    public long createProductoPedido(long idProducto, long idPedido, int cantidad) {
         if (cantidad > 0) {
             ContentValues initialValues = new ContentValues();
             initialValues.put("producto", idProducto);
@@ -156,64 +108,11 @@ public class AppPedidosDbAdapter {
         return mDb.delete(PRODUCTOS_PEDIDOS_TABLE, KEY_PRODUCTO + "=" + idProducto + " AND " + KEY_PEDIDO + "=" + idPedido, null) > 0;
     }
 
-    /**
-     * Delete the note with the given rowId
-     *
-     * @param rowId id of note to delete
-     * @return true if deleted, false otherwise
-     */
-    public boolean deleteProducto(long rowId) {
-        return mDb.delete(PRODUCTOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
-    }
-
-    /**
-     * Return a Cursor over the list of all notes in the database
-     *
-     * @return Cursor over all notes
-     */
-    public Cursor fetchAllProductos(int orderBy) {
-        String order = "";
-        switch (orderBy) {
-            case 0:
-                order = KEY_NOM_PROD + " ASC";
-                break;
-            case 1:
-                order = KEY_PRECIO_PROD + " ASC";
-                break;
-            case 2:
-            default:
-                order = KEY_PESO_PROD + " ASC";
-        }
-        return mDb.query(PRODUCTOS_TABLE, new String[]{KEY_ROWID, KEY_NOM_PROD,
-                KEY_PRECIO_PROD, KEY_PESO_PROD}, null, null, null, null, order);
-    }
 
     public Cursor fetchProductosPedidos(long idPedido) {
         String sql = "SELECT * FROM productos" +
                 " JOIN productos_pedidos ON producto = _id WHERE pedido = " + idPedido;
         return mDb.rawQuery(sql, null);
-    }
-
-    /**
-     * Return a Cursor over the list of all notes in the database
-     *
-     * @return Cursor over all notes
-     */
-    public Cursor fetchAllPedidos(int orderBy) {
-        String order = "";
-        switch (orderBy) {
-            case 0:
-                order = KEY_NOMBRE_CLIENTE_PEDIDO + " ASC";
-                break;
-            case 1:
-                order = KEY_TELEFONO_CLIENTE_PEDIDO + " ASC";
-                break;
-            case 2:
-            default:
-                order = KEY_FECHA_PEDIDO + " ASC";
-        }
-        return mDb.query(PEDIDOS_TABLE, new String[]{KEY_ROWID, KEY_FECHA_PEDIDO,
-                KEY_NOMBRE_CLIENTE_PEDIDO, KEY_TELEFONO_CLIENTE_PEDIDO}, null, null, null, null, order);
     }
 
     /**
@@ -240,20 +139,44 @@ public class AppPedidosDbAdapter {
         };
     }
 
-    public Loader<Cursor> fetchProducto(long rowId) throws SQLException {
-        return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID, KEY_NOM_PROD,
-                KEY_PRECIO_PROD, KEY_PESO_PROD, KEY_DESC_PROD}, KEY_ROWID + "=" + rowId, null, KEY_NOM_PROD+" DESC" )
-        {
-            @Override
-            public Cursor loadInBackground()
-            {
-                mDbHelper = new DatabaseHelper(getContext());
-                mDb = mDbHelper.getReadableDatabase();
-                // You can use any query that returns a cursor.
-                return mDb.query(PRODUCTOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
-                        null, null, getSortOrder(), null);
-            }
-        };
+    /**
+     * Return a Cursor over the list of all notes in the database
+     *
+     * @return Cursor over all notes
+     */
+    public Cursor fetchAllPedidos(int orderBy) {
+        String order = "";
+        switch (orderBy) {
+            case 0:
+                order = KEY_NOMBRE_CLIENTE_PEDIDO + " ASC";
+                break;
+            case 1:
+                order = KEY_TELEFONO_CLIENTE_PEDIDO + " ASC";
+                break;
+            case 2:
+            default:
+                order = KEY_FECHA_PEDIDO + " ASC";
+        }
+        return mDb.query(PEDIDOS_TABLE, new String[]{KEY_ROWID, KEY_FECHA_PEDIDO,
+                KEY_NOMBRE_CLIENTE_PEDIDO, KEY_TELEFONO_CLIENTE_PEDIDO}, null, null, null, null, order);
+    }
+
+    /**
+     * Create a new note using the title and body provided. If the note is
+     * successfully created return the new rowId for that note, otherwise return
+     * a -1 to indicate failure.
+     *
+     * @param fecha the title of the note
+     * @param nom_cliente the body of the note
+     * @return rowId or -1 if failed
+     */
+    public long createPedido(String fecha, String nom_cliente, String telf_cliente) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_FECHA_PEDIDO, fecha);
+        initialValues.put(KEY_NOMBRE_CLIENTE_PEDIDO, nom_cliente);
+        initialValues.put(KEY_TELEFONO_CLIENTE_PEDIDO, telf_cliente);
+
+        return mDb.insert(PEDIDOS_TABLE, null, initialValues);
     }
 
     /**
@@ -276,6 +199,77 @@ public class AppPedidosDbAdapter {
     }
 
     /**
+     * Delete the note with the given rowId
+     *
+     * @param rowId id of note to delete
+     * @return true if deleted, false otherwise
+     */
+    public boolean deletePedido(long rowId) {
+        return mDb.delete(PEDIDOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+
+
+
+
+
+    public Loader<Cursor> fetchProducto(long rowId) throws SQLException {
+        return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID, KEY_NOM_PROD,
+                KEY_PRECIO_PROD, KEY_PESO_PROD, KEY_DESC_PROD}, KEY_ROWID + "=" + rowId, null, KEY_NOM_PROD+" DESC" )
+        {
+            @Override
+            public Cursor loadInBackground()
+            {
+                mDbHelper = new DatabaseHelper(getContext());
+                mDb = mDbHelper.getReadableDatabase();
+                // You can use any query that returns a cursor.
+                return mDb.query(PRODUCTOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
+                        null, null, getSortOrder(), null);
+            }
+        };
+    }
+
+    /**
+     * Return a Cursor over the list of all notes in the database
+     *
+     * @return Cursor over all notes
+     */
+    public Cursor fetchAllProductos(int orderBy) {
+        String order = "";
+        switch (orderBy) {
+            case 0:
+                order = KEY_NOM_PROD + " ASC";
+                break;
+            case 1:
+                order = KEY_PRECIO_PROD + " ASC";
+                break;
+            case 2:
+            default:
+                order = KEY_PESO_PROD + " ASC";
+        }
+        return mDb.query(PRODUCTOS_TABLE, new String[]{KEY_ROWID, KEY_NOM_PROD,
+                KEY_PRECIO_PROD, KEY_PESO_PROD}, null, null, null, null, order);
+    }
+
+    /**
+     * Create a new note using the title and body provided. If the note is
+     * successfully created return the new rowId for that note, otherwise return
+     * a -1 to indicate failure.
+     *
+     * @param nombre the title of the note
+     * @param desc the body of the note
+     * @return rowId or -1 if failed
+     */
+    public long createProducto(String nombre, String desc, double precio, double peso) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_NOM_PROD, nombre);
+        initialValues.put(KEY_DESC_PROD, desc);
+        initialValues.put(KEY_PRECIO_PROD, precio);
+        initialValues.put(KEY_PESO_PROD, peso);
+
+        return mDb.insert(PRODUCTOS_TABLE, null, initialValues);
+    }
+
+    /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
@@ -295,20 +289,13 @@ public class AppPedidosDbAdapter {
         return mDb.update(PRODUCTOS_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-/*
-    public Loader<Cursor> fetchNumProductosPedido(int id_pedido, int id_producto) {
-        return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID, KEY_NOM_PROD,
-                KEY_PRECIO_PROD, KEY_PESO_PROD, KEY_DESC_PROD}, KEY_ROWID + "=" + rowId, null, KEY_NOM_PROD+" DESC" )
-        {
-            @Override
-            public Cursor loadInBackground()
-            {
-                mDbHelper = new DatabaseHelper(getContext());
-                mDb = mDbHelper.getReadableDatabase();
-                // You can use any query that returns a cursor.
-                return mDb.query(PRODUCTOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
-                        null, null, getSortOrder(), null);
-            }
-        };
-    }*/
+    /**
+     * Delete the note with the given rowId
+     *
+     * @param rowId id of note to delete
+     * @return true if deleted, false otherwise
+     */
+    public boolean deleteProducto(long rowId) {
+        return mDb.delete(PRODUCTOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    }
 }

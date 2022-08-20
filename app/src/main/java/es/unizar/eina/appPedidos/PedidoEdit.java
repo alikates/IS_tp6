@@ -13,18 +13,14 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 
 public class PedidoEdit extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -79,14 +75,10 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
     }
 
     protected void updateProductListView () {
-        Cursor mProductsCursor;
-        Cursor mProductosPedidosCursor;
+        Cursor mProductsCursor, mProductosPedidosCursor;
         ItemProducto productos;
-        String[] from;
-        int[] to;
-        int layoutId;
-        mProductsCursor = mDbHelper.fetchAllProductos(0);
 
+        mProductsCursor = mDbHelper.fetchAllProductos(0);
 
         while (mProductsCursor.moveToNext()) {
             listaProductos.add(new Producto(mProductsCursor.getInt(mProductsCursor.getColumnIndex(KEY_ROWID)), 0, mProductsCursor.getString(mProductsCursor.getColumnIndex(KEY_NOM_PROD)),mProductsCursor.getDouble(mProductsCursor.getColumnIndex(KEY_PESO_PROD)),mProductsCursor.getDouble(mProductsCursor.getColumnIndex(KEY_PRECIO_PROD))));
@@ -106,7 +98,6 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
             }
         }
 
-        layoutId = R.layout.item_producto_con_botones;
         productos = new ItemProducto(listaProductos, this);
         mList.setAdapter(productos);
     }
@@ -153,7 +144,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
                 mDbHelper.deleteProductoPedido(p.getIdProducto(), mRowId);
             } else {
                 if(!mDbHelper.updateProductoPedido(p.getIdProducto(), mRowId, p.getCantidad())) {
-                    mDbHelper.addProductoPedido(p.getIdProducto(), mRowId, p.getCantidad());
+                    mDbHelper.createProductoPedido(p.getIdProducto(), mRowId, p.getCantidad());
                 }
             }
         }

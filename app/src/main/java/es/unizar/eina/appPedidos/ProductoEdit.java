@@ -84,6 +84,8 @@ public class ProductoEdit extends AppCompatActivity implements LoaderManager.Loa
             if(id > 0) {
                 mRowId = id;
             }
+        } else {
+            mDbHelper.updateProducto(mRowId, name, desc, precio, peso);
         }
     }
 

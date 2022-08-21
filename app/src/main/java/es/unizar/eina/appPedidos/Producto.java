@@ -1,5 +1,14 @@
 package es.unizar.eina.appPedidos;
 
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOM_PROD;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PESO_PROD;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRECIO_PROD;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
+
+import android.database.Cursor;
+
 public class Producto {
     private int cantidad;
     private long idProducto;
@@ -12,6 +21,14 @@ public class Producto {
         this.nombre = nombre;
         this.peso = peso;
         this.precio = precio;
+    }
+
+    public Producto(Cursor c) {
+        this.cantidad = c.getInt(c.getColumnIndex(KEY_CANTIDAD));
+        this.idProducto = c.getInt(c.getColumnIndex(KEY_PRODUCTO));
+        this.nombre = c.getString(c.getColumnIndex(KEY_NOM_PROD));
+        this.peso = c.getDouble(c.getColumnIndex(KEY_PESO_PROD));
+        this.precio = c.getDouble(c.getColumnIndex(KEY_PRECIO_PROD));
     }
 
     public int getCantidad() {

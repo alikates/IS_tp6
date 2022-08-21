@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleCursorAdapter;
@@ -19,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import es.unizar.eina.send.SendAbstractionImpl;
@@ -233,42 +237,27 @@ public class AppPedidos extends AppCompatActivity {
     }
 
     protected void updateListView() {
-        Cursor mNotesCursor;
-        SimpleCursorAdapter notes;
-        String[] from;
-        int[] to;
-        int layoutId;
+        Cursor mCursor;
         switch (selectedTab) {
             case 0:
-                mNotesCursor = mDbHelper.fetchAllPedidos(order_by);
-                from = new String[]{
-                        AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO,
-                        AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO,
-                        AppPedidosDbAdapter.KEY_FECHA_PEDIDO
-                };
-                to = new int[]{
-                        R.id.nombre,
-                        R.id.telefono,
-                        R.id.fecha
-                };
-                layoutId = R.layout.item_pedido;
+                ArrayList<Producto> pedidoList = new ArrayList<>();
+                mCursor = mDbHelper.fetchAllPedidos(order_by);
+                while(mCursor.moveToNext()) {
+                    pedidoList.add(new Producto(mCursor));
+                }
+                ArrayAdapter<Producto> pedidos = new ArrayAdapter<Producto>(this, R.layout.item_pedido, pedidoList);
+                mList.setAdapter(pedidos);
                 break;
             case 1:
             default:
-                mNotesCursor = mDbHelper.fetchAllProductos(order_by);
-                from = new String[]{
-                        AppPedidosDbAdapter.KEY_NOM_PROD,
-                        AppPedidosDbAdapter.KEY_PRECIO_PROD,
-                        AppPedidosDbAdapter.KEY_PESO_PROD
-                };
-                to = new int[]{
-                        R.id.nombre,
-                        R.id.precio,
-                        R.id.peso
-                };
-                layoutId = R.layout.item_producto;
+                ArrayList<Producto> prodList = new ArrayList<>();
+                mCursor = mDbHelper.fetchAllProductos(order_by);
+                while(mCursor.moveToNext()) {
+                    prodList.add(new Producto(mCursor));
+                }
+                ArrayAdapter<Producto> prods = new ArrayAdapter<Producto>(this, R.layout.item_producto, prodList);
+                mList.setAdapter(prods);
+                break;
         }
-        notes = new SimpleCursorAdapter(this, layoutId, mNotesCursor, from, to, 0);
-        mList.setAdapter(notes);
     }
 }

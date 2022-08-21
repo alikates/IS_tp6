@@ -82,7 +82,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
         mProductsCursor = mDbHelper.fetchAllProductos(0);
 
         while (mProductsCursor.moveToNext()) {
-            listaProductos.add(new Producto(mProductsCursor.getInt(mProductsCursor.getColumnIndex(KEY_ROWID)), 0, mProductsCursor.getString(mProductsCursor.getColumnIndex(KEY_NOM_PROD)),mProductsCursor.getDouble(mProductsCursor.getColumnIndex(KEY_PESO_PROD)),mProductsCursor.getDouble(mProductsCursor.getColumnIndex(KEY_PRECIO_PROD))));
+            listaProductos.add(new Producto(mProductsCursor));
         }
 
         if (mRowId != null) {
@@ -179,7 +179,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
         String precio = ;
         String peso = ;
         String mensaje = "Buenos dias " + nomCliente + " su pedido estará listo para el día " + fecha + " con un precio total de " + precio + " euros, y un peso de " + peso + " Kg";
-        WAImplementor m = WAImplementor(PedidoEdit);
+        WAImplementor m = new WAImplementor(this);
         m.send(mensaje);
     }
 }

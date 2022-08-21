@@ -220,14 +220,17 @@ public class AppPedidos extends AppCompatActivity {
     }
 
     protected void enviarPedido(int position, long id) {
-        Cursor mProductosPedidosCursor = mDbHelper.fetchProductosPedidos(id);
-
-        while (mProductosPedidosCursor.moveToNext()) {
-            mProductosPedidosCursor.getInt(mProductosPedidosCursor.getColumnIndex(KEY_PRODUCTO));
-        }
+        Pedido miPedido = new Pedido(mDbHelper.fetchPedido(id), mDbHelper.fetchProductosPedidos(id));
+        //Producto misProductos = new Producto((mDbHelper.fetchProductosPedidos(id)));
+        String nomCliente = miPedido.getNombreCliente();
+        String fecha = miPedido.getFecha();
+        Double precio = miPedido.getPrecioTotal();
+        Double peso = miPedido.getPesoTotal();
+        String mensaje = "Buenos dias " + nomCliente + " su pedido estará listo para el día " + fecha +
+                " con un precio total de " + precio + " euros, y un peso de " + peso + " Kg";
 
         SendAbstractionImpl sender = new SendAbstractionImpl(this, "WA");
-        sender.send("asdasd");
+        sender.send(mensaje);
     }
 
     @Override

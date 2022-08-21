@@ -172,14 +172,4 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {}
 
-    public void sendWhatsApp() {
-        String fecha = mDateText.getText().toString();
-        String nomCliente = mClientText.getText().toString();
-        String tlfCliente = mTelfText.getText().toString();
-        String precio = ;
-        String peso = ;
-        String mensaje = "Buenos dias " + nomCliente + " su pedido estará listo para el día " + fecha + " con un precio total de " + precio + " euros, y un peso de " + peso + " Kg";
-        WAImplementor m = new WAImplementor(this);
-        m.send(mensaje);
-    }
 }

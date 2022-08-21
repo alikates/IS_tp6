@@ -69,4 +69,11 @@ public class Pedido {
         }
         return precio;
     }
+
+    public String getNombreCliente() {
+        return this.cliente;
+    }
+    public String getFecha() {
+        return this.fecha;
+    }
 }

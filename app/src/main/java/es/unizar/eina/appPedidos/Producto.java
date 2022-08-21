@@ -27,4 +27,12 @@ public class Producto {
     }
 
     public String getNombre() { return this.nombre;}
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
 }

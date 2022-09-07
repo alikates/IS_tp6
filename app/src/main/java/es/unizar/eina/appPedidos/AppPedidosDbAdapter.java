@@ -122,16 +122,32 @@ public class AppPedidosDbAdapter {
      * @return Cursor positioned to matching note, if found
      * @throws SQLException if note could not be found/retrieved
      */
-    public Loader<Cursor> fetchPedido(long rowId) throws SQLException {
+    public Cursor fetchPedido(long rowId) throws SQLException {
+        mDbHelper = new DatabaseHelper(mCtx.getApplicationContext());
+        mDb = mDbHelper.getReadableDatabase();
+        // You can use any query that returns a cursor.
+        return mDb.query(PEDIDOS_TABLE, new String[] {KEY_ROWID,
+                        KEY_NOMBRE_CLIENTE_PEDIDO, KEY_FECHA_PEDIDO, KEY_TELEFONO_CLIENTE_PEDIDO}, KEY_ROWID + "=" + rowId, null,
+                null, null, KEY_NOMBRE_CLIENTE_PEDIDO+" DESC", null);
+    }
+
+    /**
+     * Return a Cursor positioned at the note that matches the given rowId
+     *
+     * @param rowId id of note to retrieve
+     * @return Cursor positioned to matching note, if found
+     * @throws SQLException if note could not be found/retrieved
+     */
+    public Loader<Cursor> fetchPedidoLoader(long rowId) throws SQLException {
         return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID,
                 KEY_NOMBRE_CLIENTE_PEDIDO, KEY_FECHA_PEDIDO, KEY_TELEFONO_CLIENTE_PEDIDO},
-                KEY_ROWID + "=" + rowId, null, KEY_NOMBRE_CLIENTE_PEDIDO+" DESC" )
+                KEY_ROWID + "=" + rowId, null, KEY_NOMBRE_CLIENTE_PEDIDO+" DESC")
         {
             @Override
             public Cursor loadInBackground()
             {
-                mDbHelper = new DatabaseHelper(getContext());
-                mDb = mDbHelper.getReadableDatabase();
+                DatabaseHelper dbHelper  = new DatabaseHelper(getContext());
+                SQLiteDatabase mDb = dbHelper.getReadableDatabase();
                 // You can use any query that returns a cursor.
                 return mDb.query(PEDIDOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
                         null, null, getSortOrder(), null);
@@ -208,10 +224,6 @@ public class AppPedidosDbAdapter {
         return mDb.delete(PEDIDOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-
-
-
-
     public Loader<Cursor> fetchProducto(long rowId) throws SQLException {
         return new CursorLoader(mCtx.getApplicationContext(), null, new String[] {KEY_ROWID, KEY_NOM_PROD,
                 KEY_PRECIO_PROD, KEY_PESO_PROD, KEY_DESC_PROD}, KEY_ROWID + "=" + rowId, null, KEY_NOM_PROD+" DESC" )
@@ -219,8 +231,8 @@ public class AppPedidosDbAdapter {
             @Override
             public Cursor loadInBackground()
             {
-                mDbHelper = new DatabaseHelper(getContext());
-                mDb = mDbHelper.getReadableDatabase();
+                DatabaseHelper mDbHelper = new DatabaseHelper(getContext());
+                SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
                 // You can use any query that returns a cursor.
                 return mDb.query(PRODUCTOS_TABLE, getProjection(), getSelection(), getSelectionArgs(),
                         null, null, getSortOrder(), null);

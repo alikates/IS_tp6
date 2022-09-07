@@ -2,8 +2,10 @@ package es.unizar.eina.appPedidos;
 
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_FECHA_PEDIDO;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOM_PROD;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
+import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO;
 
 import android.database.Cursor;
@@ -13,6 +15,7 @@ import java.util.Iterator;
 
 public class Pedido {
     private String cliente, fecha, telefono;
+    private long id;
     private ArrayList<Producto> listaProductos = new ArrayList<>();
 
     public Pedido(String cliente, String fecha, String telefono) {
@@ -22,16 +25,30 @@ public class Pedido {
     }
 
     public Pedido(Cursor cPedido, Cursor cProductos) {
-        this.cliente = cPedido.getString(cPedido.getColumnIndex(KEY_NOM_PROD));
+        this.id = cPedido.getLong(cPedido.getColumnIndex(KEY_ROWID));
+        this.cliente = cPedido.getString(cPedido.getColumnIndex(KEY_NOMBRE_CLIENTE_PEDIDO));
         this.fecha = cPedido.getString(cPedido.getColumnIndex(KEY_FECHA_PEDIDO));
         this.telefono = cPedido.getString(cPedido.getColumnIndex(KEY_TELEFONO_CLIENTE_PEDIDO));
         while (cProductos.moveToNext()) {
-            this.listaProductos.add(new Producto(cProductos));
+            Producto p = new Producto(cProductos);
+            p.setCantidad(cProductos.getColumnIndex(KEY_CANTIDAD));
+            this.listaProductos.add(p);
         }
     }
 
-    public void addProducto(Producto p) {
-        listaProductos.add(p);
+    public Pedido(Cursor cPedido) {
+        this.id = cPedido.getLong(cPedido.getColumnIndex(KEY_ROWID));
+        this.cliente = cPedido.getString(cPedido.getColumnIndex(KEY_NOMBRE_CLIENTE_PEDIDO));
+        this.fecha = cPedido.getString(cPedido.getColumnIndex(KEY_FECHA_PEDIDO));
+        this.telefono = cPedido.getString(cPedido.getColumnIndex(KEY_TELEFONO_CLIENTE_PEDIDO));
+    }
+
+    public void addProductos(Cursor cProductos) {
+        while (cProductos.moveToNext()) {
+            Producto p = new Producto(cProductos);
+            p.setCantidad(cProductos.getColumnIndex(KEY_CANTIDAD));
+            this.listaProductos.add(new Producto(cProductos));
+        }
     }
 
     public Producto getProducto(long id) {
@@ -57,7 +74,7 @@ public class Pedido {
         double peso = 0.0;
         for(Iterator<Producto> it = listaProductos.iterator(); it.hasNext();) {
             Producto p = it.next();
-            peso = peso + p.getPeso();
+            peso = peso + p.getPeso() * p.getCantidad();
         }
         return peso;
     }
@@ -65,7 +82,7 @@ public class Pedido {
         double precio = 0.0;
         for(Iterator<Producto> it = listaProductos.iterator(); it.hasNext();) {
             Producto p = it.next();
-            precio = precio + p.getPrecio();
+            precio = precio + p.getPrecio() * p.getCantidad();
         }
         return precio;
     }
@@ -75,5 +92,13 @@ public class Pedido {
     }
     public String getFecha() {
         return this.fecha;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -241,25 +241,42 @@ public class AppPedidos extends AppCompatActivity {
 
     protected void updateListView() {
         Cursor mCursor;
+        String[] from;
+        int[] to;
+        int layoutId;
         switch (selectedTab) {
             case 0:
-                ArrayList<Producto> pedidoList = new ArrayList<>();
                 mCursor = mDbHelper.fetchAllPedidos(order_by);
-                while(mCursor.moveToNext()) {
-                    pedidoList.add(new Producto(mCursor));
-                }
-                ArrayAdapter<Producto> pedidos = new ArrayAdapter<Producto>(this, R.layout.item_pedido, pedidoList);
-                mList.setAdapter(pedidos);
+                from = new String[]{
+                        AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO,
+                        AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO,
+                        AppPedidosDbAdapter.KEY_FECHA_PEDIDO
+                };
+                to = new int[]{
+                        R.id.nombre,
+                        R.id.telefono,
+                        R.id.fecha
+                };
+                layoutId = R.layout.item_pedido;
+                ListaPedidos adapter = new ListaPedidos(this, layoutId, mCursor, from ,to, 0);
+                mList.setAdapter(adapter);
                 break;
             case 1:
             default:
-                ArrayList<Producto> prodList = new ArrayList<>();
                 mCursor = mDbHelper.fetchAllProductos(order_by);
-                while(mCursor.moveToNext()) {
-                    prodList.add(new Producto(mCursor));
-                }
-                ArrayAdapter<Producto> prods = new ArrayAdapter<Producto>(this, R.layout.item_producto, prodList);
-                mList.setAdapter(prods);
+                from = new String[]{
+                        AppPedidosDbAdapter.KEY_NOM_PROD,
+                        AppPedidosDbAdapter.KEY_PRECIO_PROD,
+                        AppPedidosDbAdapter.KEY_PESO_PROD
+                };
+                to = new int[]{
+                        R.id.nombre,
+                        R.id.precio,
+                        R.id.peso
+                };
+                layoutId = R.layout.item_producto;
+                SimpleCursorAdapter adapter2 = new SimpleCursorAdapter(this, layoutId, mCursor, from ,to, 0);
+                mList.setAdapter(adapter2);
                 break;
         }
     }

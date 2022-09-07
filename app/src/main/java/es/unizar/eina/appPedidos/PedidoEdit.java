@@ -1,39 +1,62 @@
 package es.unizar.eina.appPedidos;
 
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOM_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PESO_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRECIO_PROD;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
 import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
-import es.unizar.eina.send.WAImplementor;
 
+import android.app.DatePickerDialog;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class PedidoEdit extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PedidoEdit extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener{
 
     private EditText mDateText;
     private EditText mClientText;
     private EditText mTelfText;
     private Long mRowId;
     private ListView mList;
+    private EditText mDatePicker;
     private AppPedidosDbAdapter mDbHelper;
 
     private ArrayList<Producto> listaProductos = new ArrayList<>();
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.fecha) {
+            final Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        mDatePicker.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    }
+                }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +75,9 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
 
         mRowId = (savedInstanceState == null) ? null :
                 (Long) savedInstanceState.getSerializable(KEY_ROWID);
+
+        mDatePicker = findViewById(R.id.fecha);
+        mDatePicker.setOnClickListener(this);
 
         if (mRowId == null) {
             Bundle extras = getIntent().getExtras();
@@ -125,7 +151,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
             if (!fecha.equals("") && !nomCliente.equals("") && !tlfCliente.equals("")) {
                 Log.d("AppPedidos", fecha + nomCliente + tlfCliente);
                 long id = mDbHelper.createPedido(fecha, nomCliente, tlfCliente);
-                if(id > 0) {
+                if(id >= 0) {
                     mRowId = id;
                     saveProductos();
                 }
@@ -158,7 +184,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mDbHelper.fetchPedido(mRowId);
+        return mDbHelper.fetchPedidoLoader(mRowId);
     }
 
     @Override

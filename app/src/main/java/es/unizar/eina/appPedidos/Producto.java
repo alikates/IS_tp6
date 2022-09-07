@@ -24,8 +24,8 @@ public class Producto {
     }
 
     public Producto(Cursor c) {
-        this.cantidad = c.getInt(c.getColumnIndex(KEY_CANTIDAD));
-        this.idProducto = c.getInt(c.getColumnIndex(KEY_PRODUCTO));
+        this.cantidad = 0; //c.getInt(c.getColumnIndex(KEY_CANTIDAD));
+        this.idProducto = c.getInt(c.getColumnIndex(KEY_ROWID));
         this.nombre = c.getString(c.getColumnIndex(KEY_NOM_PROD));
         this.peso = c.getDouble(c.getColumnIndex(KEY_PESO_PROD));
         this.precio = c.getDouble(c.getColumnIndex(KEY_PRECIO_PROD));

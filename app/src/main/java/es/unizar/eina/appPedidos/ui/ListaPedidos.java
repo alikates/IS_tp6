@@ -19,10 +19,9 @@ public class ListaPedidos extends SimpleCursorAdapter {
 
     private MaterialTextView mPeso, mPrecio;
 
-    public ListaPedidos(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+    public ListaPedidos(Context context, int layout, Cursor c, String[] from, int[] to, int flags, AppPedidosDbAdapter dbAdapter) {
         super(context, layout, c, from, to, flags);
-        mDbAdapter = new AppPedidosDbAdapter(context);
-        mDbAdapter.open();
+        mDbAdapter = dbAdapter;
     }
 
     @Override

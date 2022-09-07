@@ -110,7 +110,8 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
         mProductsCursor = mDbHelper.fetchAllProductos(0);
 
         while (mProductsCursor.moveToNext()) {
-            listaProductos.add(new Producto(mProductsCursor));
+            Producto p = new Producto(mProductsCursor);
+            listaProductos.add(p);
         }
 
         if (mRowId != null) {

@@ -205,12 +205,14 @@ public class AppPedidos extends AppCompatActivity {
     private void crearPedido() {
         Intent i = new Intent(this, PedidoEdit.class);
         startActivityForResult(i, ACTIVITY_CREATE);
+        updateListView();
     }
 
     protected void editarPedido(int position, long id) {
         Intent i = new Intent(this, PedidoEdit.class);
         i.putExtra(AppPedidosDbAdapter.KEY_ROWID, id);
         startActivityForResult(i, ACTIVITY_EDIT);
+        updateListView();
     }
 
     protected void enviarPedido(int position, long id) {
@@ -252,7 +254,7 @@ public class AppPedidos extends AppCompatActivity {
                         R.id.fecha
                 };
                 layoutId = R.layout.item_pedido;
-                ListaPedidos adapter = new ListaPedidos(this, layoutId, mCursor, from ,to, 0);
+                ListaPedidos adapter = new ListaPedidos(this, layoutId, mCursor, from ,to, 0, mDbHelper);
                 mList.setAdapter(adapter);
                 break;
             case 1:

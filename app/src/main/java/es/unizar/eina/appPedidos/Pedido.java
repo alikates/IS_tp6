@@ -29,7 +29,7 @@ public class Pedido {
         this.telefono = cPedido.getString(cPedido.getColumnIndex(KEY_TELEFONO_CLIENTE_PEDIDO));
         while (cProductos.moveToNext()) {
             Producto p = new Producto(cProductos);
-            p.setCantidad(cProductos.getColumnIndex(KEY_CANTIDAD));
+            p.setCantidad(cProductos.getInt(cProductos.getColumnIndex(KEY_CANTIDAD)));
             this.listaProductos.add(p);
         }
     }

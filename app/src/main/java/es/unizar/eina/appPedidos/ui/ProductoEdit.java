@@ -1,4 +1,4 @@
-package es.unizar.eina.appPedidos;
+package es.unizar.eina.appPedidos.ui;
 
 import android.app.LoaderManager;
 import android.database.Cursor;
@@ -10,6 +10,9 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Loader;
+
+import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
+import es.unizar.eina.appPedidos.R;
 
 public class ProductoEdit extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

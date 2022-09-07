@@ -1,4 +1,4 @@
-package es.unizar.eina.appPedidos;
+package es.unizar.eina.appPedidos.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Paint;
 
 /**
  * Simple notes database access helper class. Defines the basic CRUD operations

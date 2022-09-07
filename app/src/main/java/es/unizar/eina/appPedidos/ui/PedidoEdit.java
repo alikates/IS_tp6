@@ -1,15 +1,14 @@
-package es.unizar.eina.appPedidos;
+package es.unizar.eina.appPedidos.ui;
 
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_CANTIDAD;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_PRODUCTO;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_ROWID;
 
 import android.app.DatePickerDialog;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,11 +17,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
+import es.unizar.eina.appPedidos.Producto;
+import es.unizar.eina.appPedidos.R;
 
 
 public class PedidoEdit extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener{
@@ -103,7 +105,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
 
     protected void updateProductListView () {
         Cursor mProductsCursor, mProductosPedidosCursor;
-        ItemProducto productos;
+        ItemProductoAdapter productos;
 
         mProductsCursor = mDbHelper.fetchAllProductos(0);
 
@@ -125,7 +127,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
             }
         }
 
-        productos = new ItemProducto(listaProductos, this);
+        productos = new ItemProductoAdapter(listaProductos, this);
         mList.setAdapter(productos);
     }
 
@@ -163,7 +165,7 @@ public class PedidoEdit extends AppCompatActivity implements LoaderManager.Loade
     }
 
     private void saveProductos() {
-        ItemProducto productoAdapter = (ItemProducto) mList.getAdapter();
+        ItemProductoAdapter productoAdapter = (ItemProductoAdapter) mList.getAdapter();
         Iterator<Producto> productos = productoAdapter.getProductosActualizados().iterator();
         while(productos.hasNext()){
             Producto p = productos.next();

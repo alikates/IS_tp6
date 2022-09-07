@@ -1,12 +1,10 @@
 package es.unizar.eina.appPedidos;
 
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_FECHA_PEDIDO;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOM_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_CANTIDAD;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_FECHA_PEDIDO;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_NOMBRE_CLIENTE_PEDIDO;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_ROWID;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_TELEFONO_CLIENTE_PEDIDO;
 
 import android.database.Cursor;
 

@@ -2,10 +2,9 @@ package es.unizar.eina.appPedidos.tests;
 
 import android.content.Context;
 
-import java.io.Console;
 import java.util.ArrayList;
 
-import es.unizar.eina.appPedidos.AppPedidosDbAdapter;
+import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
 import es.unizar.eina.appPedidos.Producto;
 import android.util.Log;
 

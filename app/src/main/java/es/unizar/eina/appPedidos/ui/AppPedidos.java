@@ -1,6 +1,4 @@
-package es.unizar.eina.appPedidos;
-
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
+package es.unizar.eina.appPedidos.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleCursorAdapter;
@@ -21,12 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import es.unizar.eina.send.SendAbstractionImpl;
-import es.unizar.eina.send.WAImplementor;
+import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
+import es.unizar.eina.appPedidos.Pedido;
+import es.unizar.eina.appPedidos.R;
+import es.unizar.eina.appPedidos.send.SendAbstractionImpl;
 
 public class AppPedidos extends AppCompatActivity {
 

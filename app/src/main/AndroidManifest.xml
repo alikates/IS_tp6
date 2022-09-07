@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPedidos">
         <activity
-            android:name="es.unizar.eina.appPedidos.PedidoEdit"
+            android:name="es.unizar.eina.appPedidos.ui.PedidoEdit"
             android:exported="false"/>
         <activity
-            android:name="es.unizar.eina.appPedidos.ProductoEdit"
+            android:name="es.unizar.eina.appPedidos.ui.ProductoEdit"
             android:exported="false"/>
         <activity
-            android:name="es.unizar.eina.appPedidos.AppPedidos"
+            android:name="es.unizar.eina.appPedidos.ui.AppPedidos"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

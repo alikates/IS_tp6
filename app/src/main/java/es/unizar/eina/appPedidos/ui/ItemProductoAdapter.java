@@ -1,4 +1,4 @@
-package es.unizar.eina.appPedidos;
+package es.unizar.eina.appPedidos.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ItemProducto extends ArrayAdapter<Producto> {
+import es.unizar.eina.appPedidos.Producto;
+import es.unizar.eina.appPedidos.R;
+
+public class ItemProductoAdapter extends ArrayAdapter<Producto> {
     private ArrayList<Producto> listaProductos;
 
-    public ItemProducto(ArrayList<Producto> data, Context context) {
+    public ItemProductoAdapter(ArrayList<Producto> data, Context context) {
         super(context, R.layout.item_producto_con_botones, data);
         this.listaProductos = data;
     }

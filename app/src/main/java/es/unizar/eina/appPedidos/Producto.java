@@ -1,11 +1,9 @@
 package es.unizar.eina.appPedidos;
 
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_CANTIDAD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_NOM_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PESO_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRECIO_PROD;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_PRODUCTO;
-import static es.unizar.eina.appPedidos.AppPedidosDbAdapter.KEY_ROWID;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_NOM_PROD;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_PESO_PROD;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_PRECIO_PROD;
+import static es.unizar.eina.appPedidos.db.AppPedidosDbAdapter.KEY_ROWID;
 
 import android.database.Cursor;
 

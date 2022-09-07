@@ -1,8 +1,7 @@
-package es.unizar.eina.send;
+package es.unizar.eina.appPedidos.send;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 
 public class WAImplementor implements SendImplementor {
 

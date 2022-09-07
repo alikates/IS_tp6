@@ -1,17 +1,17 @@
-package es.unizar.eina.appPedidos;
+package es.unizar.eina.appPedidos.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+
+import es.unizar.eina.appPedidos.Pedido;
+import es.unizar.eina.appPedidos.R;
+import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
 
 public class ListaPedidos extends SimpleCursorAdapter {
     private ArrayList<Pedido> listaPedidos;

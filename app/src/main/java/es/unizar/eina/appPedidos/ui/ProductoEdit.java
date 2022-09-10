@@ -79,13 +79,26 @@ public class ProductoEdit extends AppCompatActivity implements LoaderManager.Loa
     private void saveState() {
         String name = mNameText.getText().toString();
         String desc = mDescText.getText().toString();
-        double precio = Double.valueOf(mPriceText.getText().toString());
-        double peso = Double.valueOf(mWeightText.getText().toString());
+
+        double precio, peso;
+        precio = peso = 0.0;
+
+        String textoPrecio = mPriceText.getText().toString();
+        if (!textoPrecio.isEmpty()) {
+            precio = Double.valueOf(textoPrecio);
+        }
+
+        String textoPeso = mWeightText.getText().toString();
+        if (!textoPeso.isEmpty()) {
+            peso = Double.valueOf(textoPeso);
+        }
 
         if(mRowId == null) {
-            long id = mDbHelper.createProducto(name, desc, precio, peso);
-            if(id > 0) {
-                mRowId = id;
+            if (!name.equals("") && !desc.equals("")) {
+                long id = mDbHelper.createProducto(name, desc, precio, peso);
+                if(id > 0) {
+                    mRowId = id;
+                }
             }
         } else {
             mDbHelper.updateProducto(mRowId, name, desc, precio, peso);

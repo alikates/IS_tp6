@@ -225,7 +225,6 @@ public class AppPedidos extends AppCompatActivity {
 
     protected void enviarPedido(int position, long id) {
         Pedido miPedido = new Pedido(mDbHelper.fetchPedido(id), mDbHelper.fetchProductosPedidos(id));
-        //Producto misProductos = new Producto((mDbHelper.fetchProductosPedidos(id)));
         String nomCliente = miPedido.getNombreCliente();
         String fecha = miPedido.getFecha();
         Double precio = miPedido.getPrecioTotal();
@@ -262,7 +261,7 @@ public class AppPedidos extends AppCompatActivity {
                         R.id.fecha
                 };
                 layoutId = R.layout.item_pedido;
-                ListaPedidos adapter = new ListaPedidos(this, layoutId, mCursor, from ,to, 0, mDbHelper);
+                ListaPedidosAdapter adapter = new ListaPedidosAdapter(this, layoutId, mCursor, from ,to, 0, mDbHelper);
                 mList.setAdapter(adapter);
                 break;
             case 1:

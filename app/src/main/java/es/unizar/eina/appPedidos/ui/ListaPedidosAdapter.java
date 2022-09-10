@@ -13,13 +13,11 @@ import es.unizar.eina.appPedidos.Pedido;
 import es.unizar.eina.appPedidos.R;
 import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
 
-public class ListaPedidos extends SimpleCursorAdapter {
-    private ArrayList<Pedido> listaPedidos;
+public class ListaPedidosAdapter extends SimpleCursorAdapter {
     private AppPedidosDbAdapter mDbAdapter;
-
     private MaterialTextView mPeso, mPrecio;
 
-    public ListaPedidos(Context context, int layout, Cursor c, String[] from, int[] to, int flags, AppPedidosDbAdapter dbAdapter) {
+    public ListaPedidosAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags, AppPedidosDbAdapter dbAdapter) {
         super(context, layout, c, from, to, flags);
         mDbAdapter = dbAdapter;
     }

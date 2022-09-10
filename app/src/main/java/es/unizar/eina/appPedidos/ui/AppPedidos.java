@@ -21,6 +21,7 @@ import es.unizar.eina.appPedidos.db.AppPedidosDbAdapter;
 import es.unizar.eina.appPedidos.Pedido;
 import es.unizar.eina.appPedidos.R;
 import es.unizar.eina.appPedidos.send.SendAbstractionImpl;
+import es.unizar.eina.appPedidos.tests.PedidosTest;
 
 public class AppPedidos extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class AppPedidos extends AppCompatActivity {
 
     private static final int LISTAR_PRODUCTOS_ID = Menu.FIRST;
     private static final int CREAR_PRODUCTO_ID = Menu.FIRST + 1;
+    private static final int TESTEAR_ID = Menu.FIRST + 2;
     private static final int DELETE_ID = Menu.FIRST + 2;
     private static final int EDIT_ID = Menu.FIRST + 3;
     private static final int SEND_ID = Menu.FIRST + 4;
@@ -41,6 +43,7 @@ public class AppPedidos extends AppCompatActivity {
     private AppPedidosDbAdapter mDbHelper;
     private ListView mList;
     private TabLayout mTabBar;
+    private PedidosTest test;
     private int selectedTab = 0;    //Default pedidos
     private int order_by = ORDER_0;
 
@@ -87,6 +90,7 @@ public class AppPedidos extends AppCompatActivity {
 
         menu.add(Menu.NONE, LISTAR_PRODUCTOS_ID, Menu.NONE, R.string.menu_crear_pedido);
         menu.add(Menu.NONE, CREAR_PRODUCTO_ID, Menu.NONE, R.string.menu_crear_producto);
+        menu.add(Menu.NONE, TESTEAR_ID, Menu.NONE, "Testear");
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.order_by, menu);
@@ -102,6 +106,10 @@ public class AppPedidos extends AppCompatActivity {
                 return true;
             case CREAR_PRODUCTO_ID:
                 crearProducto();
+                return true;
+            case TESTEAR_ID:
+                test = new PedidosTest(this);
+                test.probarPedidos();
                 return true;
             case R.id.action_order_by:
                 PopupMenu menu = new PopupMenu(AppPedidos.this, findViewById(R.id.action_order_by));

@@ -271,6 +271,13 @@ public class AppPedidosDbAdapter {
      * @return rowId or -1 if failed
      */
     public long createProducto(String nombre, String desc, double precio, double peso) {
+        if (nombre.length() > 30 || nombre.length() <1){
+            return -1;
+        } else if (desc.length() == 0) {
+            return -1;
+        } else if (precio <= 0 || peso <= 0) {
+            return -1;
+        }
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NOM_PROD, nombre);
         initialValues.put(KEY_DESC_PROD, desc);
@@ -291,6 +298,15 @@ public class AppPedidosDbAdapter {
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updateProducto(long rowId, String nombre, String desc, double precio, double peso) {
+        if (nombre.length() > 30 || nombre.length() <1){
+            return false;
+        } else if (desc.length() == 0) {
+            return false;
+        } else if (precio <= 0 || peso <= 0) {
+            return false;
+        } else if (rowId <= 0) {
+            return false;
+        }
         ContentValues args = new ContentValues();
         args.put(KEY_NOM_PROD, nombre);
         args.put(KEY_DESC_PROD, desc);
@@ -307,6 +323,9 @@ public class AppPedidosDbAdapter {
      * @return true if deleted, false otherwise
      */
     public boolean deleteProducto(long rowId) {
+        if (rowId <= 0) {
+            return false;
+        }
         return mDb.delete(PRODUCTOS_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 }
